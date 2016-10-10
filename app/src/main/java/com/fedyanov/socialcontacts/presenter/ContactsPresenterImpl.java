@@ -2,8 +2,9 @@ package com.fedyanov.socialcontacts.presenter;
 
 import com.fedyanov.socialcontacts.callback.ItemLoadCallback;
 import com.fedyanov.socialcontacts.model.SocialNetworksManager;
+import com.fedyanov.socialcontacts.model.entity.facebook.FBContact;
 import com.fedyanov.socialcontacts.model.entity.SocialNetworkContact;
-import com.fedyanov.socialcontacts.model.entity.VKContact;
+import com.fedyanov.socialcontacts.model.entity.vk.VKContact;
 import com.fedyanov.socialcontacts.presenter.presenterinterface.ContactsPresenter;
 import com.fedyanov.socialcontacts.utils.ApplicationReceiver;
 import com.fedyanov.socialcontacts.utils.PreferenceHelper;
@@ -30,6 +31,7 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
     public void attachView(ContactsView view) {
         super.attachView(view);
         if (preferenceHelper.isFirstLaunch() &&  !preferenceHelper.isVkLogged() && !preferenceHelper.isFbLogged()) {
+            preferenceHelper.setIsFirstLaunch(false);
             view.showSocialNetworksScreen();
         } else if (!preferenceHelper.isVkLogged() && !preferenceHelper.isFbLogged()) {
             view.setNoSocialNetworksState();
@@ -65,6 +67,20 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
                 }
             });
         }
+        if (preferenceHelper.isFbLogged()) {
+            addRequest();
+            socialNetworksManager.getFBContacts(new ItemLoadCallback<List<FBContact>>() {
+                @Override
+                public void onItemsLoaded(List<FBContact> items) {
+                    addFBContacts(items);
+                }
+
+                @Override
+                public void onLoadingError(String errorMessage) {
+                    showSynchronizationError();
+                }
+            });
+        }
 
     }
 
@@ -73,16 +89,14 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
             SocialNetworkContact contact = new SocialNetworkContact(vkContact);
             contacts.add(contact);
         }
-        for (VKContact vkContact : vkContacts) {
-            SocialNetworkContact contact = new SocialNetworkContact(vkContact);
-            contacts.add(contact);
-        }
-        for (VKContact vkContact : vkContacts) {
-            SocialNetworkContact contact = new SocialNetworkContact(vkContact);
-            contacts.add(contact);
-        }
-        for (VKContact vkContact : vkContacts) {
-            SocialNetworkContact contact = new SocialNetworkContact(vkContact);
+        if (view != null)
+            view.setContacts(contacts);
+        completeRequest();
+    }
+
+    private void addFBContacts(List<FBContact> fbContacts) {
+        for (FBContact fbContact : fbContacts) {
+            SocialNetworkContact contact = new SocialNetworkContact(fbContact);
             contacts.add(contact);
         }
         if (view != null)

@@ -30,7 +30,7 @@ public class PreferenceHelper {
     }
 
     private SharedPreferences getPreferences() {
-        return SocialContactsApp.getInstance().getSharedPreferences(Constants.Prefenence.APP_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(Constants.Prefenence.APP_PREFERENCE_NAME, Context.MODE_PRIVATE);
     }
 
     public boolean isFbLogged() {

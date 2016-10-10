@@ -1,5 +1,6 @@
 package com.fedyanov.socialcontacts.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -30,7 +31,6 @@ public class ContactsActivity extends BaseToolbarActivity implements ContactsVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         presenter = new ContactsPresenterImpl(new ApplicationReceiver(SocialContactsApp.getInstance()));
-
     }
 
     @Override
@@ -53,14 +53,14 @@ public class ContactsActivity extends BaseToolbarActivity implements ContactsVie
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        getMenuInflater().inflate(R.menu.menu_contacts, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_social_networks) {
+            showSocialNetworksScreen();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -99,6 +99,6 @@ public class ContactsActivity extends BaseToolbarActivity implements ContactsVie
 
     @Override
     public void showSocialNetworksScreen() {
-
+        startActivity(new Intent(this, SocialNetworksActivity.class));
     }
 }

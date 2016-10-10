@@ -14,7 +14,7 @@ public class Constants {
     }
 
     public static class SocialNetworksPermission {
-        public static final String fb_read_contacts = "";
+        public static final String fb_read_contacts = "user_friends";
         public static final String vk_read_contacts = "friends";
     }
 }

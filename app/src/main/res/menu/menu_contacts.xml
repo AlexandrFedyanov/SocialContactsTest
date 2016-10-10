@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.fedyanov.socialcontacts.view.activity.ContactsActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_social_networks"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_social_networks"
         app:showAsAction="never" />
 </menu>

@@ -1,18 +1,12 @@
 package com.fedyanov.socialcontacts.model;
 
 import android.content.Intent;
-import android.util.Log;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.fedyanov.socialcontacts.Constants;
 import com.fedyanov.socialcontacts.callback.ItemLoadCallback;
 import com.fedyanov.socialcontacts.callback.SocialLoginCallback;
-import com.fedyanov.socialcontacts.model.entity.VKContact;
-import com.fedyanov.socialcontacts.model.response.VKContactsResponse;
+import com.fedyanov.socialcontacts.model.entity.vk.VKContact;
+import com.fedyanov.socialcontacts.model.response.vk.VKContactsResponse;
 import com.fedyanov.socialcontacts.observer.ActivityEventObserver;
 import com.fedyanov.socialcontacts.view.activity.BaseObservableEventActivity;
 import com.google.gson.Gson;
@@ -26,12 +20,9 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class VKSdkHelper {
 

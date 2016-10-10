@@ -3,7 +3,8 @@ package com.fedyanov.socialcontacts.model;
 import com.fedyanov.socialcontacts.SocialContactsApp;
 import com.fedyanov.socialcontacts.callback.ItemLoadCallback;
 import com.fedyanov.socialcontacts.callback.SocialLoginCallback;
-import com.fedyanov.socialcontacts.model.entity.VKContact;
+import com.fedyanov.socialcontacts.model.entity.facebook.FBContact;
+import com.fedyanov.socialcontacts.model.entity.vk.VKContact;
 import com.fedyanov.socialcontacts.utils.ApplicationReceiver;
 import com.fedyanov.socialcontacts.view.activity.BaseObservableEventActivity;
 
@@ -41,5 +42,9 @@ public class SocialNetworksManager {
 
     public void getVKContacts(ItemLoadCallback<List<VKContact>> itemLoadCallback) {
         VKSdkHelper.getContacts(itemLoadCallback);
+    }
+
+    public void getFBContacts(ItemLoadCallback<List<FBContact>> itemLoadCallback) {
+        facebookSdkHelper.getContacts(itemLoadCallback);
     }
 }

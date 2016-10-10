@@ -1,4 +1,4 @@
-package com.fedyanov.socialcontacts.model.response;
+package com.fedyanov.socialcontacts.model.response.vk;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,6 +1,6 @@
-package com.fedyanov.socialcontacts.model.response;
+package com.fedyanov.socialcontacts.model.response.vk;
 
-import com.fedyanov.socialcontacts.model.entity.VKContact;
+import com.fedyanov.socialcontacts.model.entity.vk.VKContact;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
