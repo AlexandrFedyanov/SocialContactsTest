@@ -11,10 +11,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.fedyanov.socialcontacts.view.activity.SocialNetworksActivity">
 
-    <Button
-        android:text="Button"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/facebook_button"
         android:id="@+id/facebookButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,10 +26,10 @@
         android:layout_marginLeft="16dp"
         app:layout_constraintHorizontal_bias="1.0" />
 
-    <Button
-        android:text="Button"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/vk_button"
         android:id="@+id/vkButton"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
         android:layout_marginEnd="16dp"
@@ -53,7 +53,7 @@
         app:layout_constraintGuide_percent="0.5056818" />
 
     <Button
-        android:text="Button"
+        android:text="@string/networks_ok"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/continueButton"

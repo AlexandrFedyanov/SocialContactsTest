@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.fedyanov.socialcontacts.view.activity.ContactsActivity">
     <item
+        android:id="@+id/refresh"
+        android:orderInCategory="100"
+        android:title="@string/action_refresh"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_refresh_white_24dp"/>
+    <item
         android:id="@+id/action_social_networks"
         android:orderInCategory="100"
         android:title="@string/action_social_networks"

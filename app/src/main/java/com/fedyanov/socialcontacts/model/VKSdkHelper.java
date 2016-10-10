@@ -49,7 +49,7 @@ public class VKSdkHelper {
 
     public void getContacts(final ItemLoadCallback<List<VKContact>> contactItemLoadCallback) {
         Map<String, Object> vkParameters = new HashMap<>();
-        vkParameters.put("fields", "nickname,photo_50,");
+        vkParameters.put("fields", "nickname,photo_100,contacts");
         VKRequest request = VKApi.friends().get(new VKParameters(vkParameters));
         request.executeSyncWithListener(new VKRequest.VKRequestListener() {
             @Override

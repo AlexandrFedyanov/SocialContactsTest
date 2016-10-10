@@ -9,6 +9,6 @@ public class VKContact {
     public String firstName;
     @SerializedName("last_name")
     public String lastName;
-    @SerializedName("photo_50")
-    public String smallAvatarl;
+    @SerializedName("photo_100")
+    public String avatar;
 }

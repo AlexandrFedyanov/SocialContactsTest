@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Social Contacts</string>
     <string name="action_social_networks">Social networks</string>
+    <string name="action_refresh">Sync contacts</string>
+
+    <!--Social networks screen-->
+    <string name="networks_ok">Continue</string>
 </resources>

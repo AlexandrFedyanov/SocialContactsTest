@@ -58,7 +58,10 @@ public class FacebookSdkHelper {
             }
         });
         LoginManager.getInstance()
-                .logInWithReadPermissions(activity, Arrays.asList(Constants.SocialNetworksPermission.fb_read_contacts));
+                .logInWithReadPermissions(activity,
+                        Arrays.asList(Constants.SocialNetworksPermission.fb_read_contacts,
+                                    Constants.SocialNetworksPermission.fb_public_profile,
+                                    Constants.SocialNetworksPermission.fb_email));
 
     }
 
@@ -77,14 +80,15 @@ public class FacebookSdkHelper {
 
         @Override
         protected List<FBContact> doInBackground(Void... voids) {
-            List<FBContact> contacts = new ArrayList<>();
-            loadTaggableFriends(contacts);
+            List<FBContact> taggableContacts = new ArrayList<>();
+            List<FBContact> appContacts = new ArrayList<>();
+            loadTaggableFriends(taggableContacts);
             if (error != null)
                 return null;
-            loadAppFriends(contacts);
+            loadAppFriends(appContacts);
             if (error != null)
                 return null;
-            return contacts;
+            return mergeContacts(taggableContacts, appContacts);
         }
 
         @Override
@@ -132,6 +136,17 @@ public class FacebookSdkHelper {
             } else {
                 error = friendsResponse.getError().getErrorMessage();
             }
+        }
+
+        private List<FBContact> mergeContacts(List<FBContact> taggableContacts, List<FBContact> appContacts) {
+            for (FBContact appContact : appContacts) {
+                for (FBContact taggableContact: taggableContacts) {
+                    if (taggableContact.id.equals(appContact.id)) {
+                        break;
+                    }
+                }
+            }
+            return taggableContacts;
         }
 
         private GraphResponse getFriendsResponse(String path) {

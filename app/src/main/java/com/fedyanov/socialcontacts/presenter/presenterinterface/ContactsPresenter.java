@@ -10,4 +10,6 @@ public interface ContactsPresenter {
     void onDestroy();
 
     void getContacts();
+
+    boolean isLoading();
 }

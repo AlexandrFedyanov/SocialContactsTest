@@ -2,6 +2,7 @@ package com.fedyanov.socialcontacts.view.activity;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.fedyanov.socialcontacts.R;
 import com.fedyanov.socialcontacts.SocialContactsApp;
@@ -15,8 +16,8 @@ import butterknife.OnClick;
 
 public class SocialNetworksActivity extends BaseObservableEventActivity implements SocialNetworksView{
 
-    @BindView(R.id.facebookButton) Button facebookButton;
-    @BindView(R.id.vkButton) Button vkButton;
+    @BindView(R.id.facebookButton) ImageView facebookButton;
+    @BindView(R.id.vkButton) ImageView vkButton;
 
     private SocialNetworkPresenter presenter;
 

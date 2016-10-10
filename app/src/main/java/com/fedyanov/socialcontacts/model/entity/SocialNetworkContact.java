@@ -25,7 +25,7 @@ public class SocialNetworkContact {
         vkId = vkContact.id;
         firstName = vkContact.firstName;
         lastName = vkContact.lastName;
-        avatar = vkContact.smallAvatarl;
+        avatar = vkContact.avatar;
         network = NetworkType.VK;
     }
 

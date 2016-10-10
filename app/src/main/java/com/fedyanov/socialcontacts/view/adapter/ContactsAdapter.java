@@ -1,5 +1,6 @@
 package com.fedyanov.socialcontacts.view.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +12,18 @@ import com.fedyanov.socialcontacts.model.NetworkType;
 import com.fedyanov.socialcontacts.model.entity.SocialNetworkContact;
 import com.fedyanov.socialcontacts.view.adapter.viewholder.ContactViewHolder;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactViewHolder> {
     private List<SocialNetworkContact> contacts = new ArrayList<>();
+
+    private WeakReference<Context> contextWeakReference;
+
+    public ContactsAdapter(Context context) {
+        contextWeakReference = new WeakReference<Context>(context);
+    }
 
     public void setData(List<SocialNetworkContact> data) {
         this.contacts = data;
@@ -46,11 +54,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactViewHolder> {
         SocialNetworkContact contact = getItem(position);
         holder.firstNameTextView.setText(contact.firstName);
         holder.lastNameTextView.setText(contact.lastName);
-        Glide.with(holder.avatarImageView.getContext())
-                .load(contact.avatar)
-                .error(R.drawable.ic_contacts_white_36dp)
-                .placeholder(R.drawable.ic_contacts_white_36dp)
-                .into(holder.avatarImageView);
+        if (contact.avatar != null && !contact.avatar.isEmpty()) {
+            Glide.with(contextWeakReference.get())
+                    .load(contact.avatar)
+                    .error(R.drawable.ic_no_avatar)
+                    .placeholder(R.drawable.ic_no_avatar)
+                    .into(holder.avatarImageView);
+        } else
+            holder.avatarImageView.setImageResource(R.drawable.ic_no_avatar);
         switch (contact.network) {
             case FACEBOOK:
                 holder.facebookIcon.setVisibility(View.VISIBLE);

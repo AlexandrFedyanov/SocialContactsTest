@@ -41,6 +41,8 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
             view.setRefreshing(isLoading());
             if (contacts.size() > 0)
                 view.setContacts(contacts);
+            if (contacts.size() == 0 && !isLoading())
+                getContacts();
         }
     }
 
@@ -120,7 +122,7 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
             view.setRefreshing(isLoading());
     }
 
-    private synchronized boolean isLoading() {
+    public synchronized boolean isLoading() {
         return runningRequests != 0;
     }
 }

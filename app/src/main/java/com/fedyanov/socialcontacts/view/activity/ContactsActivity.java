@@ -3,8 +3,12 @@ package com.fedyanov.socialcontacts.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.fedyanov.socialcontacts.R;
 import com.fedyanov.socialcontacts.SocialContactsApp;
@@ -22,9 +26,11 @@ import butterknife.BindView;
 public class ContactsActivity extends BaseToolbarActivity implements ContactsView{
 
     @BindView(R.id.contactsList) RecyclerView contactsListView;
-
     private ContactsAdapter contactsAdapter;
     private ContactsPresenter presenter;
+    private ImageView refreshImageView;
+    private MenuItem refreshMenuItem;
+    private Animation refreshAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,8 @@ public class ContactsActivity extends BaseToolbarActivity implements ContactsVie
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_contacts, menu);
+        refreshMenuItem = menu.findItem(R.id.refresh);
+        setRefreshing(presenter.isLoading());
         return true;
     }
 
@@ -62,14 +70,21 @@ public class ContactsActivity extends BaseToolbarActivity implements ContactsVie
         if (item.getItemId() == R.id.action_social_networks) {
             showSocialNetworksScreen();
             return true;
+        } else if (item.getItemId() == R.id.refresh) {
+            presenter.getContacts();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     void setupLayout() {
-        contactsAdapter = new ContactsAdapter();
+        contactsAdapter = new ContactsAdapter(this);
         contactsListView.setAdapter(contactsAdapter);
+        refreshImageView = (ImageView)((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_refresh, null);
+        refreshAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        refreshAnimation.setRepeatCount(Animation.INFINITE);
+
     }
 
     @Override
@@ -94,7 +109,15 @@ public class ContactsActivity extends BaseToolbarActivity implements ContactsVie
 
     @Override
     public void setRefreshing(boolean isRefreshing) {
-
+        if (refreshMenuItem == null)
+            return;
+        if (isRefreshing) {
+            refreshImageView.startAnimation(refreshAnimation);
+            refreshMenuItem.setActionView(refreshImageView);
+        } else if (refreshMenuItem.getActionView() != null){
+            refreshMenuItem.getActionView().clearAnimation();
+            refreshMenuItem.setActionView(null);
+        }
     }
 
     @Override
