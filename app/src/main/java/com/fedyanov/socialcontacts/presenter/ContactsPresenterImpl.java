@@ -1,6 +1,7 @@
 package com.fedyanov.socialcontacts.presenter;
 
 import com.fedyanov.socialcontacts.callback.ItemLoadCallback;
+import com.fedyanov.socialcontacts.model.NetworkType;
 import com.fedyanov.socialcontacts.model.SocialNetworksManager;
 import com.fedyanov.socialcontacts.model.entity.facebook.FBContact;
 import com.fedyanov.socialcontacts.model.entity.SocialNetworkContact;
@@ -18,7 +19,9 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
     private SocialNetworksManager socialNetworksManager;
     private PreferenceHelper preferenceHelper;
     private List<SocialNetworkContact> contacts = new ArrayList<>();
+    private List<SocialNetworkContact> refreshedContacts = new ArrayList<>();
     private int runningRequests = 0;
+    private boolean isRefreshing = false;
 
     public ContactsPresenterImpl(ApplicationReceiver applicationReceiver) {
         socialNetworksManager = new SocialNetworksManager(applicationReceiver);
@@ -55,6 +58,10 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
 
     @Override
     public void getContacts() {
+        if (contacts.size() > 0) {
+            isRefreshing = true;
+            refreshedContacts.clear();
+        }
         if (preferenceHelper.isVkLogged()) {
             addRequest();
             socialNetworksManager.getVKContacts(new ItemLoadCallback<List<VKContact>>() {
@@ -89,21 +96,29 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
     private void addVKContacts(List<VKContact> vkContacts) {
         for (VKContact vkContact : vkContacts) {
             SocialNetworkContact contact = new SocialNetworkContact(vkContact);
-            contacts.add(contact);
+            addContact(contact);
+        }
+        completeRequest();
+        if (!isLoading() && isRefreshing) {
+            contacts.clear();
+            contacts.addAll(refreshedContacts);
         }
         if (view != null)
             view.setContacts(contacts);
-        completeRequest();
     }
 
     private void addFBContacts(List<FBContact> fbContacts) {
         for (FBContact fbContact : fbContacts) {
             SocialNetworkContact contact = new SocialNetworkContact(fbContact);
-            contacts.add(contact);
+            addContact(contact);
+        }
+        completeRequest();
+        if (!isLoading() && isRefreshing) {
+            contacts.clear();
+            contacts.addAll(refreshedContacts);
         }
         if (view != null)
             view.setContacts(contacts);
-        completeRequest();
     }
 
     private void showSynchronizationError() {
@@ -120,6 +135,39 @@ public class ContactsPresenterImpl extends BasePresenter<ContactsView> implement
         runningRequests--;
         if (view != null)
             view.setRefreshing(isLoading());
+    }
+
+    private synchronized void addContact(SocialNetworkContact newContact) {
+        boolean sameContact = false;
+        List<SocialNetworkContact> currentLoadingContacts;
+        if (isRefreshing)
+            currentLoadingContacts = refreshedContacts;
+        else
+            currentLoadingContacts = contacts;
+        for (SocialNetworkContact contact : currentLoadingContacts) {
+            boolean sameFirsName = false;
+            boolean sameLastName = false;
+            if (contact.firstName != null && contact.firstName.equals(newContact.firstName))
+                sameFirsName = true;
+            if (contact.lastName != null && contact.lastName.equals(newContact.lastName))
+                sameLastName = true;
+            if (sameFirsName && sameLastName) {
+                sameContact = true;
+                contact.network = NetworkType.BOUTH;
+                if (contact.fbId == null)
+                    contact.fbId = newContact.fbId;
+                if (contact.vkId == 0)
+                    contact.vkId = newContact.vkId;
+                if (contact.phone == null)
+                    contact.phone = newContact.phone;
+                if (contact.email == null)
+                    contact.email = newContact.email;
+            }
+        }
+        if (!sameContact && !isRefreshing)
+            contacts.add(newContact);
+        else if (!sameContact)
+            refreshedContacts.add(newContact);
     }
 
     public synchronized boolean isLoading() {

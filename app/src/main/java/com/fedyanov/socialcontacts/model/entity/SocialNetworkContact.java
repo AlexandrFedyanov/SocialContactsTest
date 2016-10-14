@@ -18,6 +18,10 @@ public class SocialNetworkContact {
     public String avatar;
     @SerializedName("network")
     public NetworkType network;
+    @SerializedName("phone")
+    public String phone;
+    @SerializedName("email")
+    public String email;
 
     public SocialNetworkContact() {}
 

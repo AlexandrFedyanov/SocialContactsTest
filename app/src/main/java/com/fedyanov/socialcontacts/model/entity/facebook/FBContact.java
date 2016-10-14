@@ -7,6 +7,8 @@ public class FBContact {
     public String id;
     @SerializedName("name")
     public String name;
+    @SerializedName("email")
+    public String email;
     @SerializedName("picture")
     public FBAvatar avatar;
 }

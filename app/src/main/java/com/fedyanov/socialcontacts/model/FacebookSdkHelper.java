@@ -141,7 +141,8 @@ public class FacebookSdkHelper {
         private List<FBContact> mergeContacts(List<FBContact> taggableContacts, List<FBContact> appContacts) {
             for (FBContact appContact : appContacts) {
                 for (FBContact taggableContact: taggableContacts) {
-                    if (taggableContact.id.equals(appContact.id)) {
+                    if (taggableContact.name.equals(appContact.name)) {
+                        taggableContact.email = appContact.email;
                         break;
                     }
                 }
